@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ employee.name }}'s Details</title>
+
+    <!-- Link to Bootstrap CSS for responsive design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Link to Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f8fb;
+            padding-top: 30px;
+        }
+
+        h2, h3, h4 {
+            color: #2c3e50;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            color: #2980b9;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #8e44ad;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #27ae60;
+        }
+
+        p {
+            font-size: 18px;
+            color: #34495e;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            border-color: #f39c12;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #2980b9;
+            color: white;
+            font-size: 18px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .card-body .row {
+            margin-bottom: 10px;
+        }
+
+        .card-footer {
+            background-color: #f9f9f9;
+            text-align: right;
+            padding: 10px;
+        }
+
+        .mt-4 {
+            margin-top: 30px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 22px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            h4 {
+                font-size: 18px;
+            }
+
+            .card-body .row {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>{{ employee.name }}'s Details</h2>
+    <p>Email: {{ employee.email }}</p>
+    <p>Phone: {{ employee.phone }}</p>
+    <p>Address: {{ employee.address }}</p>
+
+    <h3>Transactions</h3>
+    <a href="{% url 'add_transaction' employee.id %}" class="btn btn-primary mb-3">Add Transaction</a>
+    <a href="{% url 'home' %}" class="btn btn-primary mb-3">back</a>
+
+    <div class="row">
+        {% for transaction in transactions %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Transaction for {{ transaction.product_name }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6"><strong>Price per Unit:</strong></div>
+                            <div class="col-6">₹{{ transaction.price_per_unit }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Quantity:</strong></div>
+                            <div class="col-6">{{ transaction.quantity }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Advance Amount:</strong></div>
+                            <div class="col-6">₹{{ transaction.advance_amount }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Total Amount:</strong></div>
+                            <div class="col-6">₹{{ transaction.total_amount }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Paid:</strong></div>
+                            <div class="col-6">₹{{ transaction.paid }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Balance:</strong></div>
+                            <div class="col-6">₹{{ transaction.balance }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Additional Quantity:</strong></div>
+                            <div class="col-6">{{ transaction.additional_quantity }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Remaining Cash Owed:</strong></div>
+                            <div class="col-6">₹{{ transaction.remaining_cash_owed }}</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'update_transaction' transaction.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_transaction' transaction.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">No transactions found.</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4">
+        <h4>Total Products Delivered: {{ total_products }}</h4>
+        <h4>Grand Total Amount: ₹{{ grand_total }}</h4>
+        <h4>Total Paid: ₹{{ total_paid }}</h4>
+        <h4>Balance Due: ₹{{ balance_due }}</h4>
+    </div>
+</div>
+
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
